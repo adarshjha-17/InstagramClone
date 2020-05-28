@@ -29,14 +29,15 @@ public class SignUp extends AppCompatActivity {
     EditText nameEditText, kickSpeedEditText, kickPowerEditText, punchSpeedEditText, punchPowerEditText;
     public String name;
     private TextView getTextView;
-    private Button getButton;
+    private Button getButton, btnNextActivity;
     String allKickBoxerObjects;
     int kickSpeed, kickPower, punchSpeed, punchPower;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//        Initialization ///////////////////////////////////////////////////////////////////////
         nameEditText = findViewById(R.id.nameEditText);
         kickSpeedEditText = findViewById(R.id.kickSpeedEditText);
         kickPowerEditText = findViewById(R.id.kickPowerEditText);
@@ -44,7 +45,11 @@ public class SignUp extends AppCompatActivity {
         punchPowerEditText = findViewById(R.id.punchPowerEditText);
         getTextView = findViewById(R.id.getTextView);
         getButton = findViewById(R.id.getButton);
+        btnNextActivity = findViewById(R.id.btnNextActivity);
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////On CLick Listener For  Getting Data From Parse Server//////////////////////////////////////////////////////////////////////////////////////////////
         getButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +57,7 @@ public class SignUp extends AppCompatActivity {
                 allKickBoxerObjects = "";
 
                 ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("kick_boxer");
+                parseQuery.whereGreaterThanOrEqualTo("kick_power",3000);
                 parseQuery.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
@@ -80,6 +86,23 @@ public class SignUp extends AppCompatActivity {
                 });
             }
         });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////// On Click Listener For Going to New Activity /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        btnNextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+
+
+
+
 
 
    }
