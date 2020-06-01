@@ -5,5 +5,6 @@
     <!-- Change the following strings as required -->
     <string name="back4app_app_id">26e217mxldufMSmTilBw28X1dPsxemagdxbcQnWt</string>
     <string name="back4app_client_key">MdTx3yvl7DNScRSVvV9JLH29jyq4oPNKgby6xIUF</string>
+    <string name="create_new_account">Create New Account</string>
 
 </resources>
