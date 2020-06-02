@@ -1,146 +1,63 @@
 package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.shashank.sony.fancytoastlib.FancyToast;
-
-import org.w3c.dom.Text;
-
-import java.util.List;
 
 
 public class SignUp extends AppCompatActivity {
 
-    EditText nameEditText, kickSpeedEditText, kickPowerEditText, punchSpeedEditText, punchPowerEditText;
-    public String name;
-    private TextView getTextView;
-    private Button getButton, btnNextActivity;
-    String allKickBoxerObjects;
-    int kickSpeed, kickPower, punchSpeed, punchPower;
+    private EditText emailEditText, usernameEditText, passwordEditText;
+    private Button signupButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        Initialization ///////////////////////////////////////////////////////////////////////
-        nameEditText = findViewById(R.id.nameEditText);
-        kickSpeedEditText = findViewById(R.id.kickSpeedEditText);
-        kickPowerEditText = findViewById(R.id.kickPowerEditText);
-        punchSpeedEditText = findViewById(R.id.punchSpeedEditText);
-        punchPowerEditText = findViewById(R.id.punchPowerEditText);
-        getTextView = findViewById(R.id.getTextView);
-        getButton = findViewById(R.id.getButton);
-        btnNextActivity = findViewById(R.id.btnNextActivity);
 
+        signupButton = findViewById(R.id.signupButton);
+        emailEditText = findViewById(R.id.emailEditText);
+        usernameEditText = findViewById(R.id.usernameEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////On CLick Listener For  Getting Data From Parse Server//////////////////////////////////////////////////////////////////////////////////////////////
-        getButton.setOnClickListener(new View.OnClickListener() {
+        signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                allKickBoxerObjects = "";
-
-                ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("kick_boxer");
-                parseQuery.whereGreaterThanOrEqualTo("kick_power",3000);
-                parseQuery.findInBackground(new FindCallback<ParseObject>() {
+                ParseUser parseUser = new ParseUser();
+                parseUser.setUsername(usernameEditText.getText().toString());
+                parseUser.setEmail(emailEditText.getText().toString());
+                parseUser.setPassword(passwordEditText.getText().toString());
+                parseUser.signUpInBackground(new SignUpCallback() {
                     @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
+                    public void done(ParseException e) {
 
                         if(e == null){
 
-                            if(objects.size() > 0){
-
-                                for (ParseObject object: objects){
-
-                                    allKickBoxerObjects += object.get("name").toString() + "\t\t\t\t" +object.get("kick_power").toString() + "\n" ;
-
-                                }
-
-                                getTextView.setText(allKickBoxerObjects);
-                                FancyToast.makeText(SignUp.this,"Get data successfully",FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
-
-
-                            }
+                            FancyToast.makeText(SignUp.this,usernameEditText.getText().toString() +", Registered successfully",
+                                    FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
                         }
                         else{
-
-                            FancyToast.makeText(SignUp.this,"Can't get data from server",FancyToast.LENGTH_SHORT,FancyToast.ERROR,false).show();
+                            FancyToast.makeText(SignUp.this,"Invalid registration",
+                                    FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
                         }
                     }
                 });
             }
         });
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////// On Click Listener For Going to New Activity /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        btnNextActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(SignUp.this,SignUpLogin.class);
-                startActivity(intent);
-
-            }
-        });
 
 
 
 
 
-
-
-   }
-
-    public void hello(View v) {
-
-        try {
-
-            name = nameEditText.getText().toString();
-            kickSpeed = Integer.parseInt(kickSpeedEditText.getText().toString());
-            kickPower = Integer.parseInt(kickPowerEditText.getText().toString());
-            punchSpeed = Integer.parseInt(punchSpeedEditText.getText().toString());
-            punchPower = Integer.parseInt(punchPowerEditText.getText().toString());
-
-
-            final ParseObject kickBoxer = new ParseObject("kick_boxer");
-            kickBoxer.put("name", name);
-            kickBoxer.put("kick_speed", kickSpeed);
-            kickBoxer.put("kick_power", kickPower);
-            kickBoxer.put("punch_speed", punchSpeed);
-            kickBoxer.put("punch_power", punchPower);
-            kickBoxer.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-
-                        FancyToast.makeText(SignUp.this, kickBoxer.get("name") + ", data saved successfully",FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
-                    }
-                    else{
-                        FancyToast.makeText(SignUp.this,e.getMessage() + " \n Data not saved try again",FancyToast.LENGTH_SHORT,FancyToast.ERROR, false).show();
-                    }
-                }
-            });
-        } catch (Exception e) {
-
-            FancyToast.makeText(SignUp.this,e.getMessage() + "\n Please enter correct details",FancyToast.LENGTH_SHORT,FancyToast.WARNING,false).show();
-        }
     }
 }
