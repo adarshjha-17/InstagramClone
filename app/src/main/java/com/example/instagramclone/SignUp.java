@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -28,6 +30,11 @@ public class SignUp extends AppCompatActivity {
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
 
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorAccent));
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,8 +53,8 @@ public class SignUp extends AppCompatActivity {
                                     FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
                         }
                         else{
-                            FancyToast.makeText(SignUp.this,"Invalid registration",
-                                    FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
+                            FancyToast.makeText(SignUp.this,"Please enter valid registration",
+                                    FancyToast.LENGTH_SHORT,FancyToast.ERROR,false).show();
                         }
                     }
                 });
