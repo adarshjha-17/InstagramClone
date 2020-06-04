@@ -25,10 +25,9 @@ public class SignUpLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
-        loginEmailEditText = findViewById(R.id.loginUsernameEditText);
+        loginEmailEditText = findViewById(R.id.loginEmailEditText);
         loginPasswordEditText = findViewById(R.id.loginPasswordEditText);
         loginButton = findViewById(R.id.loginButton);
-
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -36,7 +35,10 @@ public class SignUpLogin extends AppCompatActivity {
         window.setStatusBarColor(this.getResources().getColor(R.color.colorAccent));
 
 
-        ParseUser.logOutInBackground();
+        if(ParseUser.getCurrentUser() != null){
+
+            ParseUser.logOutInBackground();
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
