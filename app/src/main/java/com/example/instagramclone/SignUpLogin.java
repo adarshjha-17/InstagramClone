@@ -1,12 +1,16 @@
 package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,6 +24,7 @@ public class SignUpLogin extends AppCompatActivity {
 
     private EditText loginEmailEditText, loginPasswordEditText;
     private Button loginButton;
+    private ConstraintLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class SignUpLogin extends AppCompatActivity {
         loginEmailEditText = findViewById(R.id.loginEmailEditText);
         loginPasswordEditText = findViewById(R.id.loginPasswordEditText);
         loginButton = findViewById(R.id.loginButton);
+        rootLayout = findViewById(R.id.rootLayout);
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -40,11 +46,50 @@ public class SignUpLogin extends AppCompatActivity {
             ParseUser.logOutInBackground();
         }
 
+        loginPasswordEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+
+                    loginButton.callOnClick();
+                }
+
+                return false;
+            }
+        });
+
+//        Root Layout Onclick
+
+        rootLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                }
+                catch (Exception e){
+
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+
+//        Login on click listener
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 ParseUser parseUser = new ParseUser();
+                final ProgressDialog progressDialog = new ProgressDialog(SignUpLogin.this);
+                progressDialog.setMessage("Logging In");
+                progressDialog.show();
                 parseUser.logInInBackground(loginEmailEditText.getText().toString(), loginPasswordEditText.getText().toString(), new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {
@@ -58,6 +103,8 @@ public class SignUpLogin extends AppCompatActivity {
                         else{
                             FancyToast.makeText(SignUpLogin.this, e.getMessage(), FancyToast.LENGTH_SHORT,FancyToast.ERROR,false).show();
                         }
+
+                        progressDialog.dismiss();
                     }
                 });
             }

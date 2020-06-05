@@ -1,13 +1,17 @@
 package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Constraints;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,6 +25,7 @@ public class SignUp extends AppCompatActivity {
 
     private EditText emailEditText, usernameEditText, passwordEditText;
     private Button signupButton;
+    private ConstraintLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class SignUp extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        rootLayout = (ConstraintLayout) findViewById(R.id.rootLayout);
 
 
 
@@ -39,11 +45,47 @@ public class SignUp extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorAccent));
 
-
         if(ParseUser.getCurrentUser() != null){
 
             ParseUser.logOutInBackground();
         }
+
+        passwordEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+
+                    signupButton.callOnClick();
+                }
+                return false;
+            }
+        });
+
+
+        rootLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try{
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                }
+                catch (Exception e){
+
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+
+
+
+
+
 
 /////////////////////////////////////// After clicker sign up button /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -86,6 +128,9 @@ public class SignUp extends AppCompatActivity {
 
             }
         });
+
+
+
 
 
 
