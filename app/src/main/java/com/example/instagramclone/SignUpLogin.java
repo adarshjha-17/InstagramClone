@@ -97,7 +97,7 @@ public class SignUpLogin extends AppCompatActivity {
                         if(user != null && e == null){
 
                             FancyToast.makeText(SignUpLogin.this,user.getUsername() + ", login successfully", FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
-                            Intent intent = new Intent(SignUpLogin.this,Welcome.class);
+                            Intent intent = new Intent(SignUpLogin.this,SocialMedia.class);
                             startActivity(intent);
                         }
                         else{

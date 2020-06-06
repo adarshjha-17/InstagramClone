@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Constraints;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,7 +37,7 @@ public class SignUp extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
-        rootLayout = (ConstraintLayout) findViewById(R.id.rootLayout);
+        rootLayout = findViewById(R.id.rootLayout);
 
 
 
@@ -115,6 +116,8 @@ public class SignUp extends AppCompatActivity {
 
                                 FancyToast.makeText(SignUp.this,usernameEditText.getText().toString() +", Registered successfully",
                                         FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
+                                Intent intent = new Intent(SignUp.this,SocialMedia.class);
+                                startActivity(intent);
                             }
                             else{
                                 FancyToast.makeText(SignUp.this,"Please enter valid registration",
