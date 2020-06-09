@@ -19,6 +19,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.io.IOException;
+
 public class SignUpLogin extends AppCompatActivity {
 
 
@@ -94,17 +96,21 @@ public class SignUpLogin extends AppCompatActivity {
                     @Override
                     public void done(ParseUser user, ParseException e) {
 
-                        if(user != null && e == null){
 
-                            FancyToast.makeText(SignUpLogin.this,user.getUsername() + ", login successfully", FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
-                            Intent intent = new Intent(SignUpLogin.this,SocialMedia.class);
-                            startActivity(intent);
-                        }
-                        else{
-                            FancyToast.makeText(SignUpLogin.this, e.getMessage(), FancyToast.LENGTH_SHORT,FancyToast.ERROR,false).show();
-                        }
+                            if(user != null && e == null){
 
-                        progressDialog.dismiss();
+                                FancyToast.makeText(SignUpLogin.this,user.getUsername() + ", login successfully", FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
+                                Intent intent = new Intent(SignUpLogin.this,SocialMedia.class);
+                                startActivity(intent);
+                            }
+                            else{
+                                FancyToast.makeText(SignUpLogin.this, e.getMessage(), FancyToast.LENGTH_SHORT,FancyToast.ERROR,false).show();
+                            }
+
+                            progressDialog.dismiss();
+
+
+
                     }
                 });
             }
